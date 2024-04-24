@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 jobs:
   run-unit-tests:
+    environment: env
     runs-on: ubuntu-latest
     
     steps: 
