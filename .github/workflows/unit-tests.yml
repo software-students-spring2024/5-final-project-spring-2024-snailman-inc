@@ -18,6 +18,9 @@ jobs:
         run: 
           pip install -r requirements.txt -r app/requirements.txt
       - name: Ensure server runs
+        env:
+          MONGO_DB: ${{ secrets.MONGO_DB }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
           gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app & sleep 5
           response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000)
@@ -27,7 +30,3 @@ jobs:
             echo "Server is not running, response code: $response"
             exit 1
           fi
-          
-
-            
-            
