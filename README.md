@@ -4,7 +4,7 @@ An exercise to put to practice software development teamwork, subsystem communic
 
 ## Instructions
 
-Install dependencies with `pythom -m pip install -r requirements.txt -r app/requirements.txt`
+Install dependencies with `python -m pip install -r requirements.txt -r app/requirements.txt`
 
 To run the development server, run `python app/app.py`
 
