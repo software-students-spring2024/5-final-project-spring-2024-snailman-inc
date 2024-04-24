@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %} {% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
+        <script src="../static/scripts.js"></script>
+    </head>
+    <body>
+        <select id="redirectDropdown" onchange="redirectToSelected('redirectDropdown')">
+            <option value="">Go to page:</option>
+            {% if not username %}
+                <option value="/login">Login</option>
+                <option value="/signup">Sign Up</option>
+            {% endif %}
+            {% if username %}
+                <option value="/profile/{{ username }}">Profile</option>
+                <option value="/history/{{ username }}">Previous Pictures</option>
+                <option value="/change-pfp">Change Picture</option>
+                <option value="/delete">Delete Pictures</option>
+                <option value="/logout">Logout</option>
+            {% endif %}
+        </select>
+        <div>
+            {% if username %}
+                <p>{{ username }}</p>
+            {% endif %}
+            {% if not username %}
+                <p>Not signed in</p>
+            {% endif %}
+        </div>
+
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
+    </body>
+</html>

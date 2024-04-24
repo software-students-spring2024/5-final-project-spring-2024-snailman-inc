@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <script src="../static/scripts.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Home</h1>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Centered Image">
+        <div class="button-container">
+            <button onclick="location.href='/login'">Log In</button>
+            <button onclick="location.href='/signup'">Sign Up</button>
+        </div>
+    </div>
+</body>
+</html>
