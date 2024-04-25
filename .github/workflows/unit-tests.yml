@@ -33,12 +33,11 @@ jobs:
             exit 1
           fi
           pkill gunicorn
-          sleep 30
       - name: Ensure Dockerfile builds properly
         run: |
           docker build -t flask-app .
           docker run -d -p 5000:5000 -e MONGO_DB=$MONGO_DB -e MONGO_URI=$MONGO_URI flask-app
-          sleep 50
+          sleep 10
           response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000)
           if [ $response -eq 200 ]; then
             echo "Server is running"
