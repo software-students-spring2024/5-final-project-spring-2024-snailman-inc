@@ -16,7 +16,7 @@ load_dotenv()  # take environment variables from .env.
 
 # create app
 app = Flask(__name__)
-
+app.secret_key = 'Gauss'
 #Setup login
 login_manager = flask_login.LoginManager()
 
@@ -25,7 +25,7 @@ login_manager.init_app(app)
 # connect to the database
 cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
 db = cxn[os.getenv("MONGO_DB")]  # store a reference to the database
-print(db)
+
 #print(os.getenv("MONGO_DB"))
 #print(os.getenv("MONGO_URI"))
 #print(db.Users.find_one())
@@ -117,18 +117,6 @@ def signup():
             db.Users.insert_one({"username": username, "passHash": sha256(password.encode('utf-8')).hexdigest(), "currentPFP": "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg"})
             return redirect('/login') #add user and send them to sign in
     return render_template('signup.html', username_taken = True)
-
-# account deletion page
-@app.route('/delete', methods=['GET', 'POST'])
-@flask_login.login_required
-def delete():
-    if request.method == 'POST':
-        db.Images.find_one_and_delete({'username': flask_login.current_user.id, "link": request.form.get('deletable')})
-    
-        return redirect('/delete')
-    pics = db.Images.find({'username': flask_login.current_user.id})
-    picList = [pic['link'] for pic in pics]
-    return render_template('delete.html', pics = picList)
 
 @app.route('/logout')
 def logout():
