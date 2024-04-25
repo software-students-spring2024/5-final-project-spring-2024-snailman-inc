@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome {{ profileName }}!</h1>
+    <div>
+        <img src="{{ pic }}" alt="Profile Picture" style="width: 100px; height: 100px;">
+        <div class="button-container">
+            <button onclick="location.href='/game'">Play</button>
+            <button onclick="location.href='/signup'">Friends</button>
+            <form action="{{ url_for('login') }}" method="post">
+                <button type="submit">Log Out</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
