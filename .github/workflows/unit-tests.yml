@@ -32,6 +32,7 @@ jobs:
             echo "Server is not running, response code: $response"
             exit 1
           fi
+          pkill gunicorn
       - name: Ensure Dockerfile builds properly
         run: |
           docker build -t flask-app .
