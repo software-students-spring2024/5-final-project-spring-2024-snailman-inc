@@ -70,15 +70,13 @@ def request_loader(request):
     user.id = username
     return user
 
-# home page redirects to login page
-#@app.route('/')
-#def index():
-#    return redirect('/login', code=301)
 @app.route('/')
 def index():
     print("Index route is being called")
     return render_template('index.html')
 
+# login page
+@app.route('/login')
 # login page
 @app.route('/login', methods=['GET', 'POST'])  # Add methods=['GET', 'POST']
 def login():
@@ -100,6 +98,12 @@ def login():
         return render_template('login.html', username_dne = True, wrong_pw = False)
     return render_template('login.html', username_dne = False, wrong_pw = False)
 
+# profile page
+@app.route('/profile/<profileName>')
+def profile(profileName):
+    user = db.Users.find_one({'username': profileName})
+    pic = user['currentPFP']
+    return render_template('profile.html', pic = pic, profileName = profileName)
 
 # account creation page
 @app.route('/signup', methods=['GET', 'POST'])
@@ -144,4 +148,4 @@ def error_page(error):
 
 # run app
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)

@@ -1,0 +1,16 @@
+{% extends 'profile-settings.html' %}
+
+{% block profile_content %}
+    <h1>Profile information</h1>
+    <p>Here is some information about the user:</p>
+    <ul>
+        <!-- Will be done dynamically -->
+        <li>Name: John Doe</li>
+        <li>Email: john@example.com</li>
+
+        <li><a href="/change-pfp">Change Profile Picture</a></li>
+        <li><a href="/history">Previous Profile Pictures</a></li>
+        <li><a href="/delete-account">Delete Account</a></li>
+        <li><a href="/login">Sign out</a></li>
+    </ul>
+{% endblock %}
