@@ -24,7 +24,7 @@ login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
 # connect to the database
-cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
+cxn = pymongo.MongoClient(os.getenv("MONGO_URI"), tlsAllowInvalidCertificates=True)
 db = cxn[os.getenv("MONGO_DB")]  # store a reference to the database
 
 try:
