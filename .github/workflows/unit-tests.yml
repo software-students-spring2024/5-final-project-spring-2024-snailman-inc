@@ -4,7 +4,14 @@ on: [push, pull_request]
 jobs:
   run-unit-tests:
     runs-on: ubuntu-latest
-    
+
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
+        options: --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'" --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps: 
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -18,7 +25,10 @@ jobs:
         run: 
           pip install -r app/requirements.txt 
           pip install -r tests/requirements.txt
-      - name: Run Dockerized Unit Tests
+     - name: Build Docker Image
         run: |
           docker build -t test-image -f PytestDockerfile .
-          docker run test-image
+
+      - name: Run Dockerized Unit Tests
+        run: |
+          docker run --network host test-image
