@@ -8,11 +8,10 @@ import unittest
 import mongomock
 
 sys.path.append("app")
-from app.app import app
+from app import app
 
 # TODO: Implement Mock data base so the tests don't corrupt the data from the real db.
-# Maybe create a db for solely testing?
-
+# Maybe create a collection for solely testing?
 
 class TestAppRoutes:
     """

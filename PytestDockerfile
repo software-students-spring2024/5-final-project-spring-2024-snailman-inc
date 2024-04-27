@@ -1,0 +1,19 @@
+FROM python:3
+
+# Set directory
+WORKDIR /app
+
+# Copy directories into container 
+COPY . .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r app/requirements.txt 
+RUN pip install --no-cache-dir -r tests/requirements.txt 
+
+# Uncomment to print tree directory for debugging
+# RUN apt-get update
+# RUN apt-get install tree
+# RUN tree
+
+# Run pytest when the container launches
+CMD ["pytest", "-v"]
