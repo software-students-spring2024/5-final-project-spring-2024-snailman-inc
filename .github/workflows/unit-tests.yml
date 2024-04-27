@@ -1,0 +1,24 @@
+name: Run Pytest
+on: [push, pull_request]
+
+jobs:
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    
+    steps: 
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10" 
+      - name: Install pytest
+        run:
+          pip install pytest pytest-flask pytest-mock
+      - name: Install dependencies
+        run: 
+          pip install -r app/requirements.txt 
+          pip install -r tests/requirements.txt
+      - name: Run Dockerized Unit Tests
+        run: |
+          docker build -t test-image -f PytestDockerfile .
+          docker run test-image
