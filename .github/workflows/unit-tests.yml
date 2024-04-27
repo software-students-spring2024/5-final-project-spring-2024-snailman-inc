@@ -1,4 +1,4 @@
-name: Run Unit Tests
+name: Run Pytest
 on: [push, pull_request]
 
 jobs:
@@ -20,18 +20,14 @@ jobs:
       - name: Install pytest
         run:
           pip install pytest pytest-flask pytest-mock
-      - name: Run pytest
-        run:
-          cd tests
-        run: |
-          pytest
-        run:
-          cd ..
       - name: Install dependencies
         run: 
-          pip install -r app/requirements.txt 
+          pip install -r web-app/requirements.txt 
+          pip install -r machine-learning-client/requirements.txt
           pip install -r tests/requirements.txt
-     - name: Build Docker Image
+      - name: Run Dockerized Unit Tests
         run: |
           docker build -t test-image -f PytestDockerfile .
-          
+          docker run test-image
+            
+            
