@@ -22,8 +22,7 @@ jobs:
           pip install pytest pytest-flask pytest-mock
       - name: Install dependencies
         run: 
-          pip install -r web-app/requirements.txt 
-          pip install -r machine-learning-client/requirements.txt
+          pip install -r app/requirements.txt 
           pip install -r tests/requirements.txt
       - name: Run Dockerized Unit Tests
         run: |
