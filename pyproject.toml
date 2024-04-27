@@ -3,7 +3,12 @@
 name = "word-game-flask"
 version = "0.1.0"
 description = ""
-authors = ["Josckar <jp5936@nyu.edu>"]
+authors = [
+  { name="Stella Zhang", email="syz248@nyu.edu" },
+  { name="Corina Luca", email="cl5664@nyu.edu" },
+  { name="Jakob Hablitz", email="jsh9965@nyu.edu" },
+  { name="Josckar Palomeque-Elias", email="jp5936@nyu.edu" }
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]
