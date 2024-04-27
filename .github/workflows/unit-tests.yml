@@ -20,6 +20,13 @@ jobs:
       - name: Install pytest
         run:
           pip install pytest pytest-flask pytest-mock
+      - name: Run pytest
+        run:
+          cd tests
+        run: |
+          pytest
+        run:
+          cd ..
       - name: Install dependencies
         run: 
           pip install -r app/requirements.txt 
@@ -27,7 +34,4 @@ jobs:
      - name: Build Docker Image
         run: |
           docker build -t test-image -f PytestDockerfile .
-
-      - name: Run Dockerized Unit Tests
-        run: |
-          docker run --network host test-image
+          
