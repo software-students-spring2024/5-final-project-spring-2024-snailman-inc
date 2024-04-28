@@ -29,9 +29,5 @@ jobs:
           cd tests
           pytest
           cd -
-      - name: Run Dockerized Unit Tests
-        run: |
-          docker build -t test-image -f PytestDockerfile .
-          docker run test-image
             
             
