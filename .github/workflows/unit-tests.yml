@@ -24,10 +24,11 @@ jobs:
         run: 
           pip install -r app/requirements.txt 
           pip install -r tests/requirements.txt
-      - name: Run Unit Tests
+      - name: Build Docker Image
         run: |
-          cd tests
-          pytest
-          cd -
+          docker build -t test-image -f PytestDockerfile .
+      - name: Run Dockerized Unit Tests
+        run: |
+          docker run --network host test-image
             
             
