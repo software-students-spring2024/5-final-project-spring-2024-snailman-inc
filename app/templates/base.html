@@ -22,13 +22,26 @@
             {% endif %}
         </select>
         {% for message in get_flashed_messages() %}
-        <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-        </div>
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
         {% endfor %}
         <div class="content">
             {% block content %} {% endblock %}
         </div>
     </body>
 </html>
+
+<script>
+    // Close the alert when the close button is clicked
+    document.addEventListener('DOMContentLoaded', function() {
+        var closeButtons = document.querySelectorAll('.alert .close');
+        closeButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var alert = this.parentNode;
+                alert.parentNode.removeChild(alert);
+            });
+        });
+    });
+</script>
