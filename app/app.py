@@ -39,6 +39,7 @@ except Exception as e:
 class User(flask_login.UserMixin):
     pass
 
+
 @app.context_processor
 def inject_username():
     if hasattr(flask_login.current_user, "id"):
@@ -55,6 +56,7 @@ def user_loader(username):
     user.id = username
     return user
 
+
 @login_manager.request_loader
 def request_loader(request):
     username = request.form.get("username")
@@ -64,6 +66,7 @@ def request_loader(request):
     user = User()
     user.id = username
     return user
+
 
 @app.route("/")
 def index():
@@ -110,7 +113,7 @@ def signup():
         username = request.form.get("username")
         password = request.form.get("password")
         if db.Users.find_one({"username": username}) != None:
-            return render_template("signup.html", username_taken=True)  # Username taken, should display error
+            return render_template("signup.html", username_taken=True)  # Username taken
         else:
             db.Users.insert_one(
                 {
@@ -123,28 +126,31 @@ def signup():
             return redirect("/login")  # add user and send them to sign in
     return render_template("signup.html", username_taken=False)
 
-@app.route('/friends', methods=['GET', 'POST'])
+
+@app.route("/friends", methods=["GET", "POST"])
 @flask_login.login_required
 def friends():
     currentUser = flask_login.current_user.id
     user = db.Users.find_one({"username": currentUser})
     friends = user["friends"]
-    if request.method == 'GET':
-        return render_template('friends.html', friends = friends)
+    if request.method == "GET":
+        return render_template("friends.html", friendList=friends)
     else:
-        target = request.form.get('target')
+        target = request.form.get("target")
         if db.Users.find_one({"username": target}) != None:
             if target in friends:
                 friends.remove(target)
             else:
                 friends.append(target)
-            db.Users.update_one({"username": currentUser}, {"$set": {"friends": friends}}, upsert=True)
+            db.Users.update_one(
+                {"username": currentUser}, {"$set": {"friends": friends}}, upsert=True
+            )
         else:
-            flash('User not Found')
-        return render_template('friends.html', friends=friends)
-        
+            flash("User not Found")
+        return render_template("friends.html", friendList=friends)
 
-@app.route('/logout')
+
+@app.route("/logout")
 def logout():
     flask_login.logout_user()
     return redirect("/login")
