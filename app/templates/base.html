@@ -21,15 +21,6 @@
                 <option value="/logout">Logout</option>
             {% endif %}
         </select>
-        <div>
-            {% if username %}
-                <p>{{ username }}</p>
-            {% endif %}
-            {% if not username %}
-                <p>Not signed in</p>
-            {% endif %}
-        </div>
-
         <div class="content">
             {% block content %} {% endblock %}
         </div>
