@@ -126,6 +126,23 @@ def delete():
     picList = [pic['link'] for pic in pics]
     return render_template('delete.html', pics = picList)
 
+@app.route('/friends', methods=['GET', 'POST'])
+@flask_login.login_required
+def friends():
+    currentUser = flask_login.current_user.id
+    user = db.Users.find_one({"username": currentUser})
+    friends = user["friends"]
+    if request.method == 'GET':
+        return render_template('friends.html', friends = friends)
+    else:
+        target = request.form.get('friend')
+        if target in friends:
+            friends.remove(target)  # If already friends, remove from the list
+        else:
+            friends.append(target)  # If not friends, add to the list
+        db.Users.update_one({"username": currentUser}, {"$set": {"friends": friends}}, upsert=True)
+        return render_template('friends.html', friends=friends)
+
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
