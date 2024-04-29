@@ -124,6 +124,7 @@ def signup():
 
 @app.route("/game")
 def game():
+    print("routing")
     return render_template("game.html")
 
 
