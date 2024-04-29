@@ -122,6 +122,10 @@ def signup():
             return redirect("/login")  # add user and send them to sign in
     return render_template("signup.html", username_taken=True)
 
+@app.route("/game")
+def game():
+    return render_template("game.html")
+
 
 @app.route("/logout")
 def logout():
