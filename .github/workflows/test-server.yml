@@ -1,8 +1,8 @@
-name: Run Pytest
+name: Server Test
 on: [push, pull_request]
 
 jobs:
-  run-unit-tests:
+  run-server-test:
     environment: env
     runs-on: ubuntu-latest
     
