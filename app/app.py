@@ -133,7 +133,7 @@ def friends():
         return render_template('friends.html', friends = friends)
     else:
         target = request.form.get('target')
-        if db.Users.find_one({"username": currentUser}) != None:
+        if db.Users.find_one({"username": target}) != None:
             if target in friends:
                 friends.remove(target)
             else:
