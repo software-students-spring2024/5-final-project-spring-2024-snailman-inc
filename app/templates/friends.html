@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Friends</h1>
+    <ul class = "friendList">
+        {% for friend in friends %}
+        <li>{{ friend }}</li>
+        {% endfor %}
+      </ul>
+    <form action="/friends" method="post" class="edit-friends">
+        <div class="form-group">
+            <label for="target">Friend Username:</label>
+            <input type="text" id="target" name="target" required>
+        </div>
+        <input type="submit" value="Add/Remove">
+    </form>
+{% endblock %}

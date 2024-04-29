@@ -1,6 +1,6 @@
 """ code related to the app goes here """
 
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, flash
 from flask_pymongo import PyMongo
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -110,29 +110,18 @@ def signup():
         username = request.form.get("username")
         password = request.form.get("password")
         if db.Users.find_one({"username": username}) != None:
-            return redirect("/signup")  # Username taken, should display error
+            return render_template("signup.html", username_taken=True)  # Username taken, should display error
         else:
             db.Users.insert_one(
                 {
                     "username": username,
                     "passHash": sha256(password.encode("utf-8")).hexdigest(),
                     "currentPFP": "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg",
+                    "friends": [],
                 }
             )
             return redirect("/login")  # add user and send them to sign in
-    return render_template("signup.html", username_taken=True)
-
-# account deletion page
-@app.route('/delete', methods=['GET', 'POST'])
-@flask_login.login_required
-def delete():
-    if request.method == 'POST':
-        db.Images.find_one_and_delete({'username': flask_login.current_user.id, "link": request.form.get('deletable')})
-    
-        return redirect('/delete')
-    pics = db.Images.find({'username': flask_login.current_user.id})
-    picList = [pic['link'] for pic in pics]
-    return render_template('delete.html', pics = picList)
+    return render_template("signup.html", username_taken=False)
 
 @app.route('/friends', methods=['GET', 'POST'])
 @flask_login.login_required
@@ -143,13 +132,17 @@ def friends():
     if request.method == 'GET':
         return render_template('friends.html', friends = friends)
     else:
-        target = request.form.get('friend')
-        if target in friends:
-            friends.remove(target)  # If already friends, remove from the list
+        target = request.form.get('target')
+        if db.Users.find_one({"username": currentUser}) != None:
+            if target in friends:
+                friends.remove(target)
+            else:
+                friends.append(target)
+            db.Users.update_one({"username": currentUser}, {"$set": {"friends": friends}}, upsert=True)
         else:
-            friends.append(target)  # If not friends, add to the list
-        db.Users.update_one({"username": currentUser}, {"$set": {"friends": friends}}, upsert=True)
+            flash('User not Found')
         return render_template('friends.html', friends=friends)
+        
 
 @app.route('/logout')
 def logout():
