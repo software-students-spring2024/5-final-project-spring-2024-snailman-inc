@@ -9,6 +9,7 @@ jobs:
     env:
       MONGO_DB: ${{ secrets.MONGO_DB }}
       MONGO_URI: ${{ secrets.MONGO_URI }}
+      PATH: /root/.local/bin/
 
     steps: 
       - uses: actions/checkout@v4
