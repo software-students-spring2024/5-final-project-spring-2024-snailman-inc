@@ -18,7 +18,8 @@ jobs:
           python-version: "3.10" 
       - name: Install dependencies
         run: 
-          apt-get update && apt-get install -y curl
+          sudo -E apt-get update 
+          sudo -E apt-get install -y curl
           curl -sSL https://install.python-poetry.org | python3 -
           poetry lock
           poetry install --no-root --no-interaction --no-ansi
