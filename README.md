@@ -12,6 +12,20 @@ To run the development server, run `python app/app.py`
 
 To run the production server, run `gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app`
 
+### [Pytest](https://docs.pytest.org/en/stable/)
+
+To run tests using pytest, run:
+
+```bash
+pytest
+```
+or for the Dockerized version
+```bash
+docker build -t test-image -f PytestDockerfile .
+docker run test-image
+```
+from the project root
+
 ## Teammates
 
 * [Corina Luca](https://github.com/CorinaLucaFocsan)
