@@ -45,8 +45,29 @@ async function shuffleArray(letterArray) {
     }
 }
 
+function win() {
+    // clear game
+    document.querySelector('div.game').remove();
+
+    // display win message
+    body = document.querySelector('div.content')
+    const winMessage = document.createElement('h1');
+    winMessage.appendChild(document.createTextNode('You won!'));
+    body.appendChild(winMessage);
+
+    // button that starts a new game
+    const newGame = document.createElement('button');
+    newGame.appendChild(document.createTextNode('New Game'));
+    newGame.addEventListener('click', function() {
+        window.location.href = '/game';
+    });
+    body.appendChild(newGame);
+}
+
 async function checkWord(gameArray) {
-    if(gameArray.includes(input)) {
+    console.log(gameArray);
+    gameArray = await gameArray;
+    if((await gameArray).includes(input)) {
         // if word is correct
         document.querySelectorAll('span.tile.toggled').forEach(tile => {
             // take letter out of options
@@ -54,6 +75,14 @@ async function checkWord(gameArray) {
             tile.classList.remove('toggled');
             tile.classList.add('used');
         });
+        // take word out of options
+        gameArray = gameArray.filter(function(word) {
+            return word != input;
+        });
+        console.log(gameArray);
+        if(gameArray.length === 0) {
+            win();
+        }
     }
     else {
         // if word is incorrect
@@ -67,6 +96,7 @@ async function checkWord(gameArray) {
     document.querySelectorAll('span.inputTile').forEach(inputTile => {
         inputTile.removeChild(inputTile.firstChild);
     });
+    return gameArray;
 }
 
 async function selectTile(gameArray) {
@@ -76,9 +106,10 @@ async function selectTile(gameArray) {
         inputTile.appendChild(document.createTextNode(this.textContent))
         input = input.concat(this.textContent);
         if(input.length == wordLength) {
-            checkWord(gameArray);
+            gameArray = checkWord(gameArray);
         }
     }
+    return gameArray;
 }
 
 async function drawGame(gameArray) {
@@ -100,9 +131,8 @@ async function drawGame(gameArray) {
             tile.appendChild(document.createTextNode(letterArray[i * wordLength + j]))
             tile.classList.add('tile');
             tile.addEventListener('click', function() {
-                selectTile.call(this, gameArray);
+                gameArray = selectTile.call(this, gameArray);
             });
-
             row.appendChild(tile);
         }
         tileGrid.appendChild(row);
@@ -123,10 +153,17 @@ async function drawGame(gameArray) {
         inputRow.appendChild(tile);
         document.querySelector('div.game').appendChild(inputRow);
     }
+
+
+    // for testing
+    const instaWin = document.createElement('button');
+    instaWin.appendChild(document.createTextNode('Win'));
+    instaWin.addEventListener('click', win);
+    document.querySelector('div.game').appendChild(instaWin);
 }
 
 async function main() {
-    const gameArray = await generateGame();
+    let gameArray = await generateGame();
     console.log(gameArray);
     drawGame(gameArray);
 }

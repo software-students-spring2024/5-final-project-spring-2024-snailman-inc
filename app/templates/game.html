@@ -1,13 +1,8 @@
-<!doctype html>
-<html>
-    <head>
-        <title>4x4</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}" type="text/css" media="screen" title="no title" charset="utf-8">
-        <meta charset="utf-8" /> 
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+{% block content %}
         <script src="{{ url_for('static', filename='game.js') }}"></script>
         <div class="game">
         </div>
     </body>
-</html>
+{% endblock %}
