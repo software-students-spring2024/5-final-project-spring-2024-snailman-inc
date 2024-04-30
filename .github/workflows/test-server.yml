@@ -9,7 +9,6 @@ jobs:
     env:
       MONGO_DB: ${{ secrets.MONGO_DB }}
       MONGO_URI: ${{ secrets.MONGO_URI }}
-      PATH: /root/.local/bin/
 
     steps: 
       - uses: actions/checkout@v4
@@ -26,7 +25,7 @@ jobs:
           sudo -E poetry install --no-root --no-interaction --no-ansi
       - name: Ensure server runs
         run: |
-          poetry run gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app & sleep 5
+          /usr/local/bin/poetry run gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app & sleep 5
           response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000)
           if [ $response -eq 200 ]; then
             echo "Server is running"
