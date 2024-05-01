@@ -69,10 +69,9 @@ async function checkWord(gameArray) {
     if((await gameArray).includes(input)) {
         // if word is correct
         document.querySelectorAll('span.tile.toggled').forEach(tile => {
-            /*// take letter out of options
-            tile.textContent = '*';
-            //tile.removeChild(tile.firstChild);*/
+            // unselect tiles
             tile.classList.remove('toggled');
+            // clear tiles
             tile.classList.add('blank');
         });
         // take word out of options
@@ -93,7 +92,6 @@ async function checkWord(gameArray) {
     // clear input
     input = '';
     document.querySelectorAll('span.tile.input').forEach(inputTile => {
-        //inputTile.removeChild(inputTile.firstChild);
         inputTile.classList.add('blank');
     });
     return gameArray;
