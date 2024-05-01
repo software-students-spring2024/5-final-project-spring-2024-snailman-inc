@@ -55,10 +55,8 @@ header {
 }
 
 .content {
-    width: 90%;
     margin: auto;
     padding: 10%;
-    height: 70vh;
     background-color: azure;
     font: 1.2em sans-serif;
     text-align: center;
