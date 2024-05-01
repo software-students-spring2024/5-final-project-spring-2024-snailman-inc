@@ -1,0 +1,32 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t flask-word-game:0.0.7 .
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag
+        run: docker tag flask-word-game:0.0.7 josckar/flask-word-game:0.0.7
+
+      - name: Push to DockerHub
+        run: docker push josckar/flask-word-game:0.0.7
