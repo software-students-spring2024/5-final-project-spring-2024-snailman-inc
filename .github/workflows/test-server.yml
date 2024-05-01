@@ -50,5 +50,3 @@ jobs:
             echo "Server is not running, response code: $response"
             exit 1
           fi
-      - name: Add Poetry to PATH
-        run: echo "::add-path::/usr/local/bin"
