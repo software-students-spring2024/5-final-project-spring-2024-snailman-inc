@@ -158,10 +158,10 @@ async function drawGame(gameArray) {
 
 
     // for testing
-    const instaWin = document.createElement('button');
+    /*const instaWin = document.createElement('button');
     instaWin.appendChild(document.createTextNode('Win'));
     instaWin.addEventListener('click', win);
-    document.querySelector('div.game').appendChild(instaWin);
+    document.querySelector('div.game').appendChild(instaWin);*/
 }
 
 async function main() {
