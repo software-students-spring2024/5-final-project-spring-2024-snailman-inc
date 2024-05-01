@@ -138,7 +138,7 @@ def friends():
     for friend_username in friends:
         friend = db.Users.find_one({"username": friend_username})
         if friend:  # Check if friend exists
-            friendData.append(friend_username + " (score: " + friend["score"] + ")")
+            friendData.append(friend_username + " (score: " + str(friend["score"]) + ")")
     if request.method == "GET":
         return render_template("friends.html", friendList=friendData)
     else:
@@ -153,7 +153,12 @@ def friends():
             )
         else:
             flash("User not Found")
-        return render_template("friends.html", friendList=friends)
+        friendData = []  # List to store friend data including username and score
+        for friend_username in friends:
+            friend = db.Users.find_one({"username": friend_username})
+            if friend:  # Check if friend exists
+                friendData.append(friend_username + " (score: " + str(friend["score"]) + ")")
+        return render_template("friends.html", friendList=friendData)
 
 @app.route("/game")
 def game():
