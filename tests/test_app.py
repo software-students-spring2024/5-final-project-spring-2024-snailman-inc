@@ -93,8 +93,9 @@ class TestAppRoutes:
         assert response.status_code == 200
 
         # Check if the friend is added
-        response = self.app.get("/friends")
-        assert b"frienduser" in response.data
+        user = db.Users.find_one({"username": "testuser"})
+        assert user is not None
+        assert "frienduser" in user["friends"]
 
     def test_score_route(self):
         # Log in as testuser and reset score, then POST
