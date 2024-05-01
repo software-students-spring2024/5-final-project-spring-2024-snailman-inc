@@ -65,21 +65,20 @@ function win() {
 }
 
 async function checkWord(gameArray) {
-    console.log(gameArray);
     gameArray = await gameArray;
     if((await gameArray).includes(input)) {
         // if word is correct
         document.querySelectorAll('span.tile.toggled').forEach(tile => {
-            // take letter out of options
-            tile.removeChild(tile.firstChild);
+            /*// take letter out of options
+            tile.textContent = '*';
+            //tile.removeChild(tile.firstChild);*/
             tile.classList.remove('toggled');
-            tile.classList.add('used');
+            tile.classList.add('blank');
         });
         // take word out of options
         gameArray = gameArray.filter(function(word) {
             return word != input;
         });
-        console.log(gameArray);
         if(gameArray.length === 0) {
             win();
         }
@@ -93,17 +92,19 @@ async function checkWord(gameArray) {
     }
     // clear input
     input = '';
-    document.querySelectorAll('span.inputTile').forEach(inputTile => {
-        inputTile.removeChild(inputTile.firstChild);
+    document.querySelectorAll('span.tile.input').forEach(inputTile => {
+        //inputTile.removeChild(inputTile.firstChild);
+        inputTile.classList.add('blank');
     });
     return gameArray;
 }
 
 async function selectTile(gameArray) {
-    if(!this.classList.contains('toggled') && !this.classList.contains('used')) {
+    if(!this.classList.contains('toggled') && !this.classList.contains('blank')) {
         this.classList.add('toggled');
-        const inputTile = document.querySelector(`span.inputTile[position="${input.length}"]`);
-        inputTile.appendChild(document.createTextNode(this.textContent))
+        const inputTile = document.querySelector(`span.tile.input[position="${input.length}"]`);
+        inputTile.textContent = this.textContent;
+        inputTile.classList.remove('blank');
         input = input.concat(this.textContent);
         if(input.length == wordLength) {
             gameArray = checkWord(gameArray);
@@ -118,7 +119,6 @@ async function drawGame(gameArray) {
 
     // shuffle letterArray for displaying in the grid
     shuffleArray(letterArray)
-    console.log(letterArray);
 
     // draw grid of letter tiles
     const tileGrid = document.createElement('div');
@@ -141,11 +141,15 @@ async function drawGame(gameArray) {
 
     // draw row for displaying selected tiles
     const inputRow = document.createElement('div');
-    inputRow.classList.add('inputRow');
+    inputRow.classList.add('row');
+    inputRow.classList.add('input')
     for(let i = 0; i < wordLength; i++) {
         const tile = document.createElement('span');
-        tile.classList.add('inputTile');
+        tile.classList.add('tile');
+        tile.classList.add('input');
+        tile.classList.add('blank');
         tile.setAttribute('position', i);
+        tile.appendChild(document.createTextNode('*'));
 
         // TODO: allow deletion by clicking
         //tile.addEventListener('click', deleteTile);
