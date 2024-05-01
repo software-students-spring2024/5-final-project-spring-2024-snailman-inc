@@ -105,7 +105,8 @@ def profile():
     currentUser = flask_login.current_user.id
     user = db.Users.find_one({"username": currentUser})
     pic = user["currentPFP"]
-    return render_template("profile.html", pic=pic, profileName=currentUser)
+    score=user["score"]
+    return render_template("profile.html", pic=pic, profileName=currentUser, scoreDisp=score)
 
 
 # account creation page
@@ -159,7 +160,7 @@ def friends():
         for friend_username in friends:
             friend = db.Users.find_one({"username": friend_username})
             if friend:  # Check if friend exists
-                friendData.append(friend_username + " (score: " + str(friend["score"]) + ")")
+                friendData.append(friend_username + " (" + str(friend["score"]) + " wins)")
         return render_template("friends.html", friendList=friendData)
 
 @app.route("/game")
