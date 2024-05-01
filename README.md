@@ -16,18 +16,14 @@ To run the server on port 5000:
 
 ### [Pytest](https://docs.pytest.org/en/stable/)
 
-To run tests using pytest, run:
-
-```bash
-pytest
-```
-or for the Dockerized version
+In the project root: to run tests using pytest, build the dockerfile with:
 ```bash
 docker build -t test-image -f PytestDockerfile .
-docker run test-image
 ```
-from the project root
-
+`MONGO_URI` and `MONGO_DB` environment variables must be specified. If using a `.env` file created in the root directory, you can run the following command to test the server:
+```bash
+docker run --env-file .env test-image
+```
 ## Teammates
 
 * [Corina Luca](https://github.com/CorinaLucaFocsan)

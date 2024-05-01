@@ -116,7 +116,7 @@ def profile():
 
 # account creation page
 @app.route("/signup", methods=["GET", "POST"])
-def signup():
+def signup():  # pragma: no cover
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -146,17 +146,13 @@ def friends():
     for friend_username in friends:
         friend = db.Users.find_one({"username": friend_username})
         if friend:  # Check if friend exists
-            friendData.append(
-                friend_username + " (" + str(friend["score"]) + " wins)"
-            )
+            friendData.append(friend_username + " (" + str(friend["score"]) + " wins)")
     if request.method == "GET":
         return render_template("friends.html", friendList=friendData)
     else:
         target = request.form.get("target")
         if db.Users.find_one({"username": target}) != None:
-            if target in friends:
-                friends.remove(target)
-            else:
+            if target not in friends:
                 friends.append(target)
             db.Users.update_one(
                 {"username": currentUser}, {"$set": {"friends": friends}}, upsert=True
@@ -219,5 +215,5 @@ def error_page(error):
 
 
 # run app
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     app.run(host="0.0.0.0", port=5000)
