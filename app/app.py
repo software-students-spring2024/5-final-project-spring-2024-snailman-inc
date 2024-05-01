@@ -152,9 +152,7 @@ def friends():
     else:
         target = request.form.get("target")
         if db.Users.find_one({"username": target}) != None:
-            if target in friends:
-                friends.remove(target)
-            else:
+            if target not in friends:
                 friends.append(target)
             db.Users.update_one(
                 {"username": currentUser}, {"$set": {"friends": friends}}, upsert=True
