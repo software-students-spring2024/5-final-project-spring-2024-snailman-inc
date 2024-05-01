@@ -23,5 +23,13 @@ jobs:
       - name: Run Dockerized Unit Tests
         run: |
           docker run --network host test-image
+      - name: Test Code Coverage
+        run: |
+          coverage run -m pytest tests/
+          COVERAGE=$(coverage report | grep app.py | awk '{print $4}' | cut -d '%' -f 1)
+          if [ "$COVERAGE" -lt 80 ]; then
+            echo "Coverage is less than 80% ($COVERAGE%). Failing the build."
+            exit 1
+          fi
             
             

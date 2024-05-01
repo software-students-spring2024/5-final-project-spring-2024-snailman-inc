@@ -13,6 +13,7 @@ from app import app
 # TODO: Implement Mock data base so the tests don't corrupt the data from the real db.
 # Maybe create a collection for solely testing?
 
+
 class TestAppRoutes:
     """
     Class for testing web app
@@ -59,3 +60,11 @@ class TestAppRoutes:
             response = self.app.get("/profile/testuser")
             assert response.status_code == 200
             assert b"Welcome testuser" in response.data
+
+    def test_game_route(self):
+        response = self.app.get("/game")
+        assert response.status_code == 200
+
+    def test_error_handling(self):
+        response = self.app.get("/nonexistent-route")
+        assert response.status_code == 404
