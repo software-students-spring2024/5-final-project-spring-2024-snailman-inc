@@ -25,6 +25,7 @@ jobs:
           docker run --network host test-image
       - name: Test Code Coverage
         run: |
+          pip install coverage
           coverage run -m pytest tests/
           COVERAGE=$(coverage report | grep app.py | awk '{print $4}' | cut -d '%' -f 1)
           if [ "$COVERAGE" -lt 80 ]; then
