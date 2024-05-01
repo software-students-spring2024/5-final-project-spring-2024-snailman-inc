@@ -1,18 +1,38 @@
 # Final Project
 
+[![Run Pytest](https://github.com/software-students-spring2024/5-final-project-spring-2024-snailman-inc/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/software-students-spring2024/5-final-project-spring-2024-snailman-inc/actions/workflows/unit-tests.yml)
+
+[![Server Test](https://github.com/software-students-spring2024/5-final-project-spring-2024-snailman-inc/actions/workflows/test-server.yml/badge.svg)](https://github.com/software-students-spring2024/5-final-project-spring-2024-snailman-inc/actions/workflows/test-server.yml)
+
 An exercise to put to practice software development teamwork, subsystem communication, containers, deployment, and CI/CD pipelines. See [instructions](./instructions.md) for details.
 
-## Link to App: [https://octopus-app-a6p6s.ondigitalocean.app/](https://octopus-app-a6p6s.ondigitalocean.app/)
+## About the Game
+
+**wrdl**: A deceptively difficult word game. 16 letters are given, from which the player must recreate 4 words of length 4. Add friends and compare the number of boards you've won.
+
+Play now at [https://octopus-app-a6p6s.ondigitalocean.app/](https://octopus-app-a6p6s.ondigitalocean.app/).
 
 ## Instructions for Running
 
-The [Docker image](./Dockerfile) is hosted on [Docker Hub](https://hub.docker.com/r/josckar/word-game-flask).
+The [Docker image](./Dockerfile) is hosted on [Docker Hub](https://hub.docker.com/r/josckar/flask-word-game).
+
+### Configuring Environment Variables
+
+MONGO_DB=\[*Name of your MongoDB database*\]
+
+MONGO_URI=\[*URI of your MongoDB database*\]
+
+SECRET_KEY=\[*Your secret key*\]
+
+### Running the Server
 
 To run the server on port 5000:
 
-`docker build -t flask-app .`
+```
+docker build -t flask-app .
 
-`docker run -p 5000:5000 flask-app`
+docker run -p 5000:5000 flask-app
+```
 
 ### [Pytest](https://docs.pytest.org/en/stable/)
 
