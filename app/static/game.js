@@ -64,12 +64,12 @@ async function win() {
     body.appendChild(newGame);
 
     try {
-        await fetch('/update-score', {
+        await fetch('/scored', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ message: 'winner' }) // sending 'winner' as the message
+            body: JSON.stringify({ message: 'snail' }) // sending 'winner' as the message
         });
     } catch (error) {
         console.error('Error updating score:', error);
