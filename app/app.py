@@ -1,6 +1,6 @@
 """ code related to the app goes here """
 
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, flash
 from flask_pymongo import PyMongo
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -39,6 +39,7 @@ except Exception as e:
 class User(flask_login.UserMixin):
     pass
 
+
 @app.context_processor
 def inject_username():
     if hasattr(flask_login.current_user, "id"):
@@ -55,6 +56,7 @@ def user_loader(username):
     user.id = username
     return user
 
+
 @login_manager.request_loader
 def request_loader(request):
     username = request.form.get("username")
@@ -64,6 +66,7 @@ def request_loader(request):
     user = User()
     user.id = username
     return user
+
 
 @app.route("/")
 def index():
@@ -110,17 +113,41 @@ def signup():
         username = request.form.get("username")
         password = request.form.get("password")
         if db.Users.find_one({"username": username}) != None:
-            return redirect("/signup")  # Username taken, should display error
+            return render_template("signup.html", username_taken=True)  # Username taken
         else:
             db.Users.insert_one(
                 {
                     "username": username,
                     "passHash": sha256(password.encode("utf-8")).hexdigest(),
                     "currentPFP": "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg",
+                    "friends": [],
                 }
             )
             return redirect("/login")  # add user and send them to sign in
-    return render_template("signup.html", username_taken=True)
+    return render_template("signup.html", username_taken=False)
+
+
+@app.route("/friends", methods=["GET", "POST"])
+@flask_login.login_required
+def friends():
+    currentUser = flask_login.current_user.id
+    user = db.Users.find_one({"username": currentUser})
+    friends = user["friends"]
+    if request.method == "GET":
+        return render_template("friends.html", friendList=friends)
+    else:
+        target = request.form.get("target")
+        if db.Users.find_one({"username": target}) != None:
+            if target in friends:
+                friends.remove(target)
+            else:
+                friends.append(target)
+            db.Users.update_one(
+                {"username": currentUser}, {"$set": {"friends": friends}}, upsert=True
+            )
+        else:
+            flash("User not Found")
+        return render_template("friends.html", friendList=friends)
 
 
 @app.route("/logout")
