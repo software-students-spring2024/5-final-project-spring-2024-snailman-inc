@@ -1,4 +1,28 @@
-# pytest settings that might help... feel free to modify or remove as needed
+[tool.poetry]
+name = "word-game-flask"
+version = "0.1.0"
+description = ""
+authors = ["Josckar <jp5936@nyu.edu>","Stella Zhang <syz248@nyu.edu>", "Corina Luca <cl5664@nyu.edu>", "Jakob Hablitz <jsh9965@nyu.edu>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "2.0.2"
+flask-pymongo = "2.3.0"
+pymongo = {version = "3.12.0", extras = ["srv"]}
+python-dotenv = "0.19.0"
+flask-login = "0.5.0"
+werkzeug = "2.0.2"
+gunicorn = "21.2.0"
+pytest = { version = "^8.1.1", optional = true }
+mongomock = { version = "^4.1.2", optional = true }
+
+[tool.poetry.extras]
+unit-testing = ["pytest", "mongomock"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 minversion = "7.0" # minimum pytest version
@@ -6,6 +30,7 @@ addopts = "-ra -q" # default pytest command line options
 pythonpath = [
   "."
 ]
+
 testpaths = [
     "tests",
 ]

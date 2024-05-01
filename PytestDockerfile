@@ -1,14 +1,21 @@
+# Use a base image with Python installed
 FROM python:3.10-slim
 
-# Set directory
+# Install Poetry
+RUN apt-get update && apt-get install -y curl
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="$PATH:/root/.local/bin/"
+
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy directories into container 
+# Copy only the poetry configuration files
 COPY . .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r app/requirements.txt 
-RUN pip install --no-cache-dir -r tests/requirements.txt 
+# Install project dependencies
+RUN poetry lock
+RUN poetry install --no-root --no-interaction --no-ansi
+RUN poetry install --no-root --extras "unit-testing"
 
 # Uncomment to print tree directory for debugging
 # RUN apt-get update
@@ -16,4 +23,4 @@ RUN pip install --no-cache-dir -r tests/requirements.txt
 # RUN tree
 
 # Run pytest when the container launches
-CMD ["pytest", "-v"]
+CMD ["poetry", "run", "pytest", "-v"]
