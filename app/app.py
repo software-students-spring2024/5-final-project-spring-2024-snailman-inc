@@ -121,6 +121,7 @@ def signup():
                     "passHash": sha256(password.encode("utf-8")).hexdigest(),
                     "currentPFP": "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg",
                     "friends": [],
+                    "score": 0,
                 }
             )
             return redirect("/login")  # add user and send them to sign in
@@ -153,6 +154,21 @@ def friends():
 def game():
     print("routing")
     return render_template("game.html")
+
+@app.route("/scored")
+@flask_login.login_required
+def scored():
+    currentUser = flask_login.current_user.id
+    user = db.Users.find_one({"username": currentUser})
+    score = user["score"]
+    if request.method == "POST":
+        score += 1
+        db.Users.update_one(
+                {"username": currentUser}, {"$set": {"score": score}}, upsert=True
+            )
+        return 200
+    else:
+        return render_template("score.html")
 
 
 @app.route("/logout")

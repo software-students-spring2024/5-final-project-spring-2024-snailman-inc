@@ -45,7 +45,7 @@ async function shuffleArray(letterArray) {
     }
 }
 
-function win() {
+async function win() {
     // clear game
     document.querySelector('div.game').remove();
 
@@ -62,6 +62,19 @@ function win() {
         window.location.href = '/game';
     });
     body.appendChild(newGame);
+
+    try {
+        await fetch('/update-score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: 'winner' }) // sending 'winner' as the message
+        });
+    } catch (error) {
+        console.error('Error updating score:', error);
+        // Handle error if needed
+    }
 }
 
 async function checkWord(gameArray) {
