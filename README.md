@@ -2,7 +2,9 @@
 
 An exercise to put to practice software development teamwork, subsystem communication, containers, deployment, and CI/CD pipelines. See [instructions](./instructions.md) for details.
 
-## Link to App: [https://octopus-app-a6p6s.ondigitalocean.app/](https://octopus-app-a6p6s.ondigitalocean.app/)
+## Link to App
+
+[https://octopus-app-a6p6s.ondigitalocean.app/](https://octopus-app-a6p6s.ondigitalocean.app/)
 
 ## Instructions for Running
 
@@ -10,9 +12,11 @@ The [Docker image](./Dockerfile) is hosted on [Docker Hub](https://hub.docker.co
 
 To run the server on port 5000:
 
-`docker build -t flask-app .`
+```
+docker build -t flask-app .
 
-`docker run -p 5000:5000 flask-app`
+docker run -p 5000:5000 flask-app
+```
 
 ### [Pytest](https://docs.pytest.org/en/stable/)
 
