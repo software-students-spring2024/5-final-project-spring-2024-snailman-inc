@@ -147,7 +147,7 @@ def friends():
         friend = db.Users.find_one({"username": friend_username})
         if friend:  # Check if friend exists
             friendData.append(
-                friend_username + " (score: " + str(friend["score"]) + ")"
+                friend_username + " (" + str(friend["score"]) + " wins)"
             )
     if request.method == "GET":
         return render_template("friends.html", friendList=friendData)
