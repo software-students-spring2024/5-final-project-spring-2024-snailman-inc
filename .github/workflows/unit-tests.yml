@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 jobs:
   run-unit-tests:
+    environment: env
     runs-on: ubuntu-latest
 
     services:
@@ -10,6 +11,9 @@ jobs:
         image: mongo
         ports:
           - 27017:27017
+    env:
+      MONGO_DB: ${{ secrets.MONGO_DB }}
+      MONGO_URI: ${{ secrets.MONGO_URI }}
 
     steps: 
       - uses: actions/checkout@v4
@@ -22,7 +26,7 @@ jobs:
           docker build -t test-image -f PytestDockerfile .
       - name: Run Dockerized Unit Tests
         run: |
-          docker run --network host test-image
+          docker run -e MONGO_DB=$MONGO_DB -e MONGO_URI=$MONGO_URI --network host test-image
       - name: Test Code Coverage
         run: |
           pip install coverage
