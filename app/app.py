@@ -24,7 +24,10 @@ login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
 # connect to the database
-cxn = pymongo.MongoClient(os.getenv("MONGO_URI", "mongodb://localhost:27017/"), tlsAllowInvalidCertificates=True)
+cxn = pymongo.MongoClient(
+    os.getenv("MONGO_URI", "mongodb://localhost:27017/"),
+    tlsAllowInvalidCertificates=True,
+)
 db = cxn[os.getenv("MONGO_DB", "default_db")]  # store a reference to the database
 
 try:
@@ -90,7 +93,7 @@ def login():
                 user = User()
                 user.id = username
                 flask_login.login_user(user)
-                return redirect(url_for("profile", profileName=username))
+                return redirect(url_for("profile"))
             else:
                 return render_template("login.html", username_dne=False, wrong_pw=True)
         # For demonstration, redirect to profile page after login
@@ -99,11 +102,16 @@ def login():
 
 
 # profile page
-@app.route("/profile/<profileName>")
-def profile(profileName):
-    user = db.Users.find_one({"username": profileName})
+@app.route("/profile")
+@flask_login.login_required
+def profile():
+    currentUser = flask_login.current_user.id
+    user = db.Users.find_one({"username": currentUser})
     pic = user["currentPFP"]
-    return render_template("profile.html", pic=pic, profileName=profileName)
+    score = user["score"]
+    return render_template(
+        "profile.html", pic=pic, profileName=currentUser, scoreDisp=score
+    )
 
 
 # account creation page
@@ -121,6 +129,7 @@ def signup():
                     "passHash": sha256(password.encode("utf-8")).hexdigest(),
                     "currentPFP": "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg",
                     "friends": [],
+                    "score": 0,
                 }
             )
             return redirect("/login")  # add user and send them to sign in
@@ -133,8 +142,15 @@ def friends():
     currentUser = flask_login.current_user.id
     user = db.Users.find_one({"username": currentUser})
     friends = user["friends"]
+    friendData = []  # List to store friend data including username and score
+    for friend_username in friends:
+        friend = db.Users.find_one({"username": friend_username})
+        if friend:  # Check if friend exists
+            friendData.append(
+                friend_username + " (" + str(friend["score"]) + " wins)"
+            )
     if request.method == "GET":
-        return render_template("friends.html", friendList=friends)
+        return render_template("friends.html", friendList=friendData)
     else:
         target = request.form.get("target")
         if db.Users.find_one({"username": target}) != None:
@@ -147,12 +163,36 @@ def friends():
             )
         else:
             flash("User not Found")
-        return render_template("friends.html", friendList=friends)
+        friendData = []  # List to store friend data including username and score
+        for friend_username in friends:
+            friend = db.Users.find_one({"username": friend_username})
+            if friend:  # Check if friend exists
+                friendData.append(
+                    friend_username + " (" + str(friend["score"]) + " wins)"
+                )
+        return render_template("friends.html", friendList=friendData)
+
 
 @app.route("/game")
 def game():
     print("routing")
     return render_template("game.html")
+
+
+@app.route("/scored", methods=["GET", "POST"])
+@flask_login.login_required
+def scored():
+    currentUser = flask_login.current_user.id
+    user = db.Users.find_one({"username": currentUser})
+    score = user["score"]
+    if request.method == "POST":
+        score += 1
+        db.Users.update_one(
+            {"username": currentUser}, {"$set": {"score": score}}, upsert=True
+        )
+        return "200"
+    else:
+        return render_template("score.html")
 
 
 @app.route("/logout")

@@ -56,6 +56,6 @@ class TestAppRoutes:
                 data=dict(username="testuser", password="password"),
                 follow_redirects=True,
             )
-            response = self.app.get("/profile/testuser")
+            response = self.app.get("/profile")
             assert response.status_code == 200
             assert b"Welcome testuser" in response.data
