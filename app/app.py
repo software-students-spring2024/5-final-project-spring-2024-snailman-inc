@@ -155,7 +155,7 @@ def game():
     print("routing")
     return render_template("game.html")
 
-@app.route("/scored")
+@app.route("/scored", methods=["GET", "POST"])
 @flask_login.login_required
 def scored():
     currentUser = flask_login.current_user.id
