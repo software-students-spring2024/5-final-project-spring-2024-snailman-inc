@@ -6,13 +6,25 @@
 
 An exercise to put to practice software development teamwork, subsystem communication, containers, deployment, and CI/CD pipelines. See [instructions](./instructions.md) for details.
 
-## Link to App
+## About the Game
 
-[https://octopus-app-a6p6s.ondigitalocean.app/](https://octopus-app-a6p6s.ondigitalocean.app/)
+**wrdl**: A deceptively difficult word game. 16 letters are given, from which the player must recreate 4 words of length 4. Add friends and compare the number of boards you've won.
+
+Play now at [https://octopus-app-a6p6s.ondigitalocean.app/](https://octopus-app-a6p6s.ondigitalocean.app/).
 
 ## Instructions for Running
 
-The [Docker image](./Dockerfile) is hosted on [Docker Hub](https://hub.docker.com/r/josckar/word-game-flask).
+The [Docker image](./Dockerfile) is hosted on [Docker Hub](https://hub.docker.com/r/josckar/flask-word-game).
+
+### Configuring Environment Variables
+
+MONGO_DB=\[*Name of your MongoDB database*\]
+
+MONGO_URI=\[*URI of your MongoDB database*\]
+
+SECRET_KEY=\[*Your secret key*\]
+
+### Running the Server
 
 To run the server on port 5000:
 
