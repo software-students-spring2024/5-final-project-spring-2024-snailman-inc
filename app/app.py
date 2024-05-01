@@ -134,8 +134,13 @@ def friends():
     currentUser = flask_login.current_user.id
     user = db.Users.find_one({"username": currentUser})
     friends = user["friends"]
+    friend_data = []  # List to store friend data including username and score
+    for friend_username in friends:
+        friend = db.Users.find_one({"username": friend_username})
+        if friend:  # Check if friend exists
+            friend_data.append({"username": friend_username, "score": friend.get("score", 0)})
     if request.method == "GET":
-        return render_template("friends.html", friendList=friends)
+        return render_template("friends.html", friendData=friend_data)
     else:
         target = request.form.get("target")
         if db.Users.find_one({"username": target}) != None:
@@ -166,7 +171,7 @@ def scored():
         db.Users.update_one(
                 {"username": currentUser}, {"$set": {"score": score}}, upsert=True
             )
-        return 200
+        return "200"
     else:
         return render_template("score.html")
 
