@@ -2,15 +2,17 @@
 
 An exercise to put to practice software development teamwork, subsystem communication, containers, deployment, and CI/CD pipelines. See [instructions](./instructions.md) for details.
 
-## Instructions
+## Link to App: [https://octopus-app-a6p6s.ondigitalocean.app/](https://octopus-app-a6p6s.ondigitalocean.app/)
+
+## Instructions for Running
 
 The [Docker image](./Dockerfile) is hosted on [Docker Hub](https://hub.docker.com/r/josckar/word-game-flask).
 
-Install dependencies with `pythom -m pip install -r requirements.txt -r app/requirements.txt`
+To run the server on port 5000:
 
-To run the development server, run `python app/app.py`
+`docker build -t flask-app .`
 
-To run the production server, run `gunicorn -w 4 -b 0.0.0.0:5000 wsgi:app`
+`docker run -p 5000:5000 flask-app`
 
 ### [Pytest](https://docs.pytest.org/en/stable/)
 

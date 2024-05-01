@@ -149,6 +149,11 @@ def friends():
             flash("User not Found")
         return render_template("friends.html", friendList=friends)
 
+@app.route("/game")
+def game():
+    print("routing")
+    return render_template("game.html")
+
 
 @app.route("/logout")
 def logout():

@@ -131,3 +131,26 @@ li a {
 li a:hover {
     background-color: #ddd;
 }
+
+.tile {
+    background-color: #ddd;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 1px;
+    line-height: 50px;
+    font-size: 16px;
+    margin: 16px;
+  }
+
+  .blank {
+    color: #ddd;
+  }
+
+  .toggled {
+    background-color: aqua;
+  }
+
+  .input.tile {
+    border: solid black;
+  }
