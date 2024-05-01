@@ -90,7 +90,7 @@ def login():
                 user = User()
                 user.id = username
                 flask_login.login_user(user)
-                return redirect(url_for("profile", profileName=username))
+                return redirect(url_for("profile"))
             else:
                 return render_template("login.html", username_dne=False, wrong_pw=True)
         # For demonstration, redirect to profile page after login
@@ -99,11 +99,13 @@ def login():
 
 
 # profile page
-@app.route("/profile/<profileName>")
-def profile(profileName):
-    user = db.Users.find_one({"username": profileName})
+@app.route("/profile")
+@flask_login.login_required
+def profile():
+    currentUser = flask_login.current_user.id
+    user = db.Users.find_one({"username": currentUser})
     pic = user["currentPFP"]
-    return render_template("profile.html", pic=pic, profileName=profileName)
+    return render_template("profile.html", pic=pic, profileName=currentUser)
 
 
 # account creation page
