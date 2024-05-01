@@ -24,7 +24,10 @@ login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
 # connect to the database
-cxn = pymongo.MongoClient(os.getenv("MONGO_URI", "mongodb://localhost:27017/"), tlsAllowInvalidCertificates=True)
+cxn = pymongo.MongoClient(
+    os.getenv("MONGO_URI", "mongodb://localhost:27017/"),
+    tlsAllowInvalidCertificates=True,
+)
 db = cxn[os.getenv("MONGO_DB", "default_db")]  # store a reference to the database
 
 try:
@@ -105,8 +108,10 @@ def profile():
     currentUser = flask_login.current_user.id
     user = db.Users.find_one({"username": currentUser})
     pic = user["currentPFP"]
-    score=user["score"]
-    return render_template("profile.html", pic=pic, profileName=currentUser, scoreDisp=score)
+    score = user["score"]
+    return render_template(
+        "profile.html", pic=pic, profileName=currentUser, scoreDisp=score
+    )
 
 
 # account creation page
@@ -141,7 +146,9 @@ def friends():
     for friend_username in friends:
         friend = db.Users.find_one({"username": friend_username})
         if friend:  # Check if friend exists
-            friendData.append(friend_username + " (score: " + str(friend["score"]) + ")")
+            friendData.append(
+                friend_username + " (score: " + str(friend["score"]) + ")"
+            )
     if request.method == "GET":
         return render_template("friends.html", friendList=friendData)
     else:
@@ -160,13 +167,17 @@ def friends():
         for friend_username in friends:
             friend = db.Users.find_one({"username": friend_username})
             if friend:  # Check if friend exists
-                friendData.append(friend_username + " (" + str(friend["score"]) + " wins)")
+                friendData.append(
+                    friend_username + " (" + str(friend["score"]) + " wins)"
+                )
         return render_template("friends.html", friendList=friendData)
+
 
 @app.route("/game")
 def game():
     print("routing")
     return render_template("game.html")
+
 
 @app.route("/scored", methods=["GET", "POST"])
 @flask_login.login_required
@@ -177,8 +188,8 @@ def scored():
     if request.method == "POST":
         score += 1
         db.Users.update_one(
-                {"username": currentUser}, {"$set": {"score": score}}, upsert=True
-            )
+            {"username": currentUser}, {"$set": {"score": score}}, upsert=True
+        )
         return "200"
     else:
         return render_template("score.html")
