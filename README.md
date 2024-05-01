@@ -1,5 +1,9 @@
 # Final Project
 
+[![Run Pytest](https://github.com/software-students-spring2024/5-final-project-spring-2024-snailman-inc/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/software-students-spring2024/5-final-project-spring-2024-snailman-inc/actions/workflows/unit-tests.yml)
+
+[![Server Test](https://github.com/software-students-spring2024/5-final-project-spring-2024-snailman-inc/actions/workflows/test-server.yml/badge.svg)](https://github.com/software-students-spring2024/5-final-project-spring-2024-snailman-inc/actions/workflows/test-server.yml)
+
 An exercise to put to practice software development teamwork, subsystem communication, containers, deployment, and CI/CD pipelines. See [instructions](./instructions.md) for details.
 
 ## Link to App
